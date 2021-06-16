@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Calendar</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="container">
+        <div class="top-nav">
+          <div class="top-nav__left-side">    <!-- Left side menu -->
+            <button class="top-nav__main-menu-btn top-nav__btn">
+              <i class="icon-dehaze"></i>
+            </button>
+            <div class="top-nav__logo">Календар</div>
+            <button class="top-nav__today"> Сьогодні</button>
+            <div class="arrow-btns">
+              <button class="prev-btn">
+                <i class="icon-keyboard_arrow_left"></i>
+              </button>
+              <button class="next-btn">
+                <i class="icon-keyboard_arrow_right"></i>
+              </button>
+            </div>
+            <div class="current-date">
+              <div class="current__month">Червень</div>
+              <div class="current__year">2021</div>
+            </div>
+          </div>
+          <div class="top-nav__right-side">   <!-- Right side menu -->
+            <button class="top-nav__search top-nav__btn">
+              <i class="icon-search"></i>
+            </button>
+            <button class="top-nav__settings top-nav__btn">
+              <i class="icon-settings"></i>
+            </button>
+            <div class="top-nav__choice-veiw">
+              <span>Місяць</span>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="sidebar">
+        <div class="container">
+          <button class="create-btn">
+            Створити
+          </button>
+          <div class="sm-calendar">
+            <div class="sm-calendar__header">
+              <div class="current-date">
+                <div class="current__month">Червень</div>
+                <div class="current__year">2021</div>
+              </div>
+              <div class="arrow-btns">
+                <button class="prev-btn">
+                  <i class="icon-keyboard_arrow_left"></i>
+                </button>
+                <button class="next-btn">
+                  <i class="icon-keyboard_arrow_right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="sm-calendar__body">
+              <div class="sm-calendar__week-items">
+                <div class="sm-calendar__week-item">Нд</div>
+                <div class="sm-calendar__week-item">Пн</div>
+                <div class="sm-calendar__week-item">Вт</div>
+                <div class="sm-calendar__week-item">Ср</div>
+                <div class="sm-calendar__week-item">Чт</div>
+                <div class="sm-calendar__week-item">Пт</div>
+                <div class="sm-calendar__week-item">Сб</div>
+              </div>
+              <div class="sm-calendar__days">
+                <!-- <div class="sm-calendar__day">1</div>
+                <div class="sm-calendar__day">2</div>
+                <div class="sm-calendar__day">3</div>
+                <div class="sm-calendar__day">4</div>
+                <div class="sm-calendar__day">5</div>
+                <div class="sm-calendar__day">6</div>
+                <div class="sm-calendar__day">7</div>
+                <div class="sm-calendar__day">8</div>
+                <div class="sm-calendar__day">9</div>
+                <div class="sm-calendar__day">10</div>
+                <div class="sm-calendar__day">11</div>
+                <div class="sm-calendar__day">12</div>
+                <div class="sm-calendar__day">13</div>
+                <div class="sm-calendar__day">14</div>
+                <div class="sm-calendar__day">15</div>
+                <div class="sm-calendar__day">16</div>
+                <div class="sm-calendar__day">17</div>
+                <div class="sm-calendar__day">18</div>
+                <div class="sm-calendar__day">19</div>
+                <div class="sm-calendar__day">20</div>
+                <div class="sm-calendar__day">21</div>
+                <div class="sm-calendar__day">22</div>
+                <div class="sm-calendar__day">23</div>
+                <div class="sm-calendar__day">24</div>
+                <div class="sm-calendar__day">25</div>
+                <div class="sm-calendar__day">26</div>
+                <div class="sm-calendar__day">27</div>
+                <div class="sm-calendar__day">28</div>
+                <div class="sm-calendar__day">29</div>
+                <div class="sm-calendar__day">30</div>
+                <div class="sm-calendar__day">31</div>
+                <div class="sm-calendar__day">1</div>
+                <div class="sm-calendar__day">2</div>
+                <div class="sm-calendar__day">3</div>
+                <div class="sm-calendar__day">4</div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <main class="main">
+        <div class="bg-calendar">
+          <div class="bg-calendar__row bg-calendar__row--week">
+            <div class="bg-calendar__week-day">Нд</div>
+            <div class="bg-calendar__week-day">Пн</div>
+            <div class="bg-calendar__week-day">Вт</div>
+            <div class="bg-calendar__week-day">Ср</div>
+            <div class="bg-calendar__week-day">Чт</div>
+            <div class="bg-calendar__week-day">Пт</div>
+            <div class="bg-calendar__week-day">Сб</div>
+          </div>
+          <div class="bg-calendar__row">
+            <div class="bg-calendar__day">1</div>
+            <div class="bg-calendar__day">2</div>
+            <div class="bg-calendar__day">3</div>
+            <div class="bg-calendar__day">4</div>
+            <div class="bg-calendar__day">5</div>
+            <div class="bg-calendar__day">6</div>
+            <div class="bg-calendar__day">7</div>
+          </div>
+          <div class="bg-calendar__row">
+            <div class="bg-calendar__day">8</div>
+            <div class="bg-calendar__day">9</div>
+            <div class="bg-calendar__day">10</div>
+            <div class="bg-calendar__day">11</div>
+            <div class="bg-calendar__day">12</div>
+            <div class="bg-calendar__day">13</div>
+            <div class="bg-calendar__day">14</div>
+          </div>
+          <div class="bg-calendar__row">
+            <div class="bg-calendar__day">15</div>
+            <div class="bg-calendar__day">16</div>
+            <div class="bg-calendar__day">17</div>
+            <div class="bg-calendar__day">18</div>
+            <div class="bg-calendar__day">19</div>
+            <div class="bg-calendar__day">20</div>
+            <div class="bg-calendar__day">21</div>
+          </div>
+          <div class="bg-calendar__row">
+            <div class="bg-calendar__day">22</div>
+            <div class="bg-calendar__day">23</div>
+            <div class="bg-calendar__day">24</div>
+            <div class="bg-calendar__day">25</div>
+            <div class="bg-calendar__day">26</div>
+            <div class="bg-calendar__day">27</div>
+            <div class="bg-calendar__day">28</div>
+          </div>
+          <div class="bg-calendar__row">
+            <div class="bg-calendar__day">29</div>
+            <div class="bg-calendar__day">30</div>
+            <div class="bg-calendar__day">1</div>
+            <div class="bg-calendar__day">2</div>
+            <div class="bg-calendar__day">3</div>
+            <div class="bg-calendar__day">4</div>
+            <div class="bg-calendar__day">5</div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <footer class="footer"></footer>
+  </div>
+  
+
+  
+  <script src="js/main.js"></script>
+</body>
+
+</html>

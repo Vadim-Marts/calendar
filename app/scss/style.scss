@@ -1,0 +1,199 @@
+@import 'vars';
+@import 'fonts';
+@import 'reset';
+@import 'libs';
+@import 'global';
+
+
+.header{
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid $border-color;
+}
+.top-nav{
+    height: 65px;
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    font-size: 26px;
+    line-height: 28px;
+    &__left-side{
+        display: grid;
+        align-items: center;
+        grid-auto-flow: column;
+        gap: 20px;
+        max-width: 500px;
+    }
+    &__right-side{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    &__btn{
+        width: 40px;
+        height: 40px;
+        @extend %btn-hover;
+    }
+    &__today,
+    &__choice-veiw{
+        font-size: 14px;
+        font-weight: 500;
+        padding: 17px;
+        line-height: 0;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+        @extend %btn-hover;
+    }
+}
+.arrow-btns{
+    font-size: 1.2em;
+    display: flex;
+    button{
+        position: relative;
+        @extend %btn-hover;
+    }
+}
+.prev-btn,
+.next-btn
+{
+    &::before{
+        display: none;
+        content: 'Попередній місяць';
+        position: absolute;
+        top: 120%;
+        left: -150%;
+        justify-content: center;
+        align-items: center;
+        height: 25px;
+        width: 120px;
+        font-size: 12px;
+        color: #fff;
+        background: rgba(77, 74, 74, .8);
+        border-radius: 2px;
+    }
+    .arrow-btns &:hover::before{
+        display: flex;
+    }
+}
+.next-btn{
+    &::before{
+        content: 'Наступний місяць';
+    }
+}
+.current-date{
+    display: grid;
+    grid-auto-flow: column;
+    gap: 6px;
+}
+
+.sidebar{
+    min-width: 350px;
+    height: 100%;
+    border-right: 1px solid $border-color;
+    padding: 20px 0;
+    transition: all .4s linear;
+    &--hide{
+        margin-left: -350px;
+    }
+}
+.create-btn{
+    position: relative;
+    width: 146px;
+    height: 48px;
+    padding-left: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .25px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all .2s linear;
+    &:hover{
+        box-shadow: 0px 4px 20px 0px rgba(34, 60, 80, 0.2);
+        background: rgba(220, 225, 247, 0.596);
+    }
+    &::before{
+        content: '+';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 15px;
+        font-size: 50px;
+        font-weight: 300;
+    }
+}
+.sm-calendar{
+    display: grid;
+    gap: 6px;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        font-weight: 400;
+    }
+    &__body{
+        display: grid;
+        gap: 6px; 
+    }
+    &__week-items{
+        display: grid;
+        grid-template: 1fr / repeat(7, 1fr);
+    }
+    &__week-item,
+    &__day{       
+        width: 15px;
+        height: 15px;
+        padding: 15px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 500;
+        @extend %btn-hover;
+    }
+    &__days{
+        display: grid;
+        gap: 6px;
+        grid-template: repeat(6, 1fr) / repeat(7, 1fr);
+    }
+}
+
+.bg-calendar{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    font-size: 14px;
+    font-weight: 500;
+    &__row{
+        width: 100%;
+        height: calc(100% / 5);
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);  
+          
+        border-bottom: 1px solid $border-color;
+        &--week{
+            height: 30px;
+            border-bottom: 0;
+            text-transform: uppercase;
+            user-select: none;
+        }
+    }
+    &__week-day,
+    &__day{
+        border-right: 1px solid $border-color;
+        display: flex;
+        justify-content: center;
+        padding: 5px;
+    }
+
+}
+
+.dayNotThisMonth{
+    color: #70757a;
+    font-weight: 400;
+}

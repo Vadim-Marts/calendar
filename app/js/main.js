@@ -3,7 +3,7 @@
 const   togleSidebarButton = document.querySelector('.top-nav__main-menu-btn'),
         arrowButtons = document.querySelector('.arrow-btns'),
         currentDate = new Date(),
-        monthsArrArr = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад',  'Грудень'];
+        monthsArr = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад',  'Грудень'];
         
 togleSidebarButton.addEventListener('click', togleSidebar);
 

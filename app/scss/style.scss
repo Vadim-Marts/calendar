@@ -171,11 +171,9 @@
     font-weight: 500;
     &__row{
         width: 100%;
-        height: calc(100% / 5);
+        height: calc(100% );
         display: grid;
         grid-template-columns: repeat(7, 1fr);  
-          
-        border-bottom: 1px solid $border-color;
         &--week{
             height: 30px;
             border-bottom: 0;
@@ -189,6 +187,9 @@
         display: flex;
         justify-content: center;
         padding: 5px;
+    }
+    &__day{
+        border-bottom: 1px solid $border-color;
     }
 
 }

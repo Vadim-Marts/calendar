@@ -14,7 +14,7 @@ const   mainCalendarRow = document.querySelector('.bg-calendar__row--days');
             current : 'current_day'
         };
         datesList = {};
-let dateAtributeMainCal = '';
+let dateAtributeMainCell = '';
 
 
 togleSidebarButton.addEventListener('click', togleSidebar);
@@ -38,10 +38,11 @@ arrowButtons.addEventListener('click', (event) => {
     
 });
 mainCalendarRow.addEventListener('click', event => {
-    const className = event.target.classList.value;
+    const className = event.target.classList[0];
     const dateAtribute = event.target.dataset.date;
 
-    dateAtributeMainCal = dateAtribute;
+    console.log(className);
+    dateAtributeMainCell = dateAtribute;
 
     if (className === "bg-calendar__day") {
         showNewEventForm(); 
@@ -348,7 +349,7 @@ function checkNewEventFormRadio() {
 function getNewEventFormFild() {
     const newEventName = document.querySelector('.new-event__input-text').value;
     const eventType = checkNewEventFormRadio();
-    let atribute = dateAtributeMainCal;
+    let atribute = dateAtributeMainCell;
 
     if (!newEventName) {return};    
 

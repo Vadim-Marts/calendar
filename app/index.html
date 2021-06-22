@@ -135,7 +135,11 @@
             <div class="bg-calendar__week-day">Пт</div>
             <div class="bg-calendar__week-day">Сб</div>
           </div>
-          <div class="bg-calendar__row">
+          <div class="bg-calendar__row bg-calendar__row--days">
+            <!-- <div class="bg-calendar__day">
+              <div class="bg-calendar__day-date">20</div>
+              <div class="bg-calendar__event">New event</div>
+            </div>
             <div class="bg-calendar__day"></div>
             <div class="bg-calendar__day"></div>
             <div class="bg-calendar__day"></div>
@@ -176,60 +180,42 @@
             <div class="bg-calendar__day"></div>
             <div class="bg-calendar__day"></div>
             <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
+            <div class="bg-calendar__day"></div> -->
           </div>
-          <!-- <div class="bg-calendar__row">
-            <div class="bg-calendar__day">8</div>
-            <div class="bg-calendar__day">9</div>
-            <div class="bg-calendar__day">10</div>
-            <div class="bg-calendar__day">11</div>
-            <div class="bg-calendar__day">12</div>
-            <div class="bg-calendar__day">13</div>
-            <div class="bg-calendar__day">14</div>
-          </div>
-          <div class="bg-calendar__row">
-            <div class="bg-calendar__day">15</div>
-            <div class="bg-calendar__day">16</div>
-            <div class="bg-calendar__day">17</div>
-            <div class="bg-calendar__day">18</div>
-            <div class="bg-calendar__day">19</div>
-            <div class="bg-calendar__day">20</div>
-            <div class="bg-calendar__day">21</div>
-          </div>
-          <div class="bg-calendar__row">
-            <div class="bg-calendar__day">22</div>
-            <div class="bg-calendar__day">23</div>
-            <div class="bg-calendar__day">24</div>
-            <div class="bg-calendar__day">25</div>
-            <div class="bg-calendar__day">26</div>
-            <div class="bg-calendar__day">27</div>
-            <div class="bg-calendar__day">28</div>
-          </div>
-          <div class="bg-calendar__row">
-            <div class="bg-calendar__day">29</div>
-            <div class="bg-calendar__day">30</div>
-            <div class="bg-calendar__day">1</div>
-            <div class="bg-calendar__day">2</div>
-            <div class="bg-calendar__day">3</div>
-            <div class="bg-calendar__day">4</div>
-            <div class="bg-calendar__day">5</div>
-          </div>
-          <div class="bg-calendar__row">
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-          </div> -->
         </div>
       </main>
     </div>
     <footer class="footer"></footer>
   </div>
   
+
+  <div class="new-event">
+    <div class="new-event__header">
+      <button class="new-event__close">&#10006;</button>
+    </div>
+    <div class="new-event__content">
+      <input class="new-event__input-text" type="text" placeholder="Додайте назву">
+      <div class="new-event__btns">
+
+        <label class="new-event__btn">
+          <input type="radio" id="new-event__btn" data-event_btn="events" name="new-event-radiobtn" checked></input>
+          <div class="new-event__btn-block">Подія</div>
+        </label>
+        <label class="new-event__btn">
+          <input type="radio" id="new-event__btn" data-event_btn="tasks" name="new-event-radiobtn"></input>
+          <div class="new-event__btn-block">Завдання</div>
+        </label>
+        <label class="new-event__btn">
+          <input type="radio" id="new-event__btn" data-event_btn="reminders" name="new-event-radiobtn"></input>
+          <div class="new-event__btn-block">Нагадування</div>
+        </label>
+      </div>
+    </div>
+    <div class="new-event__footer">
+      <button class="new-event__save">Зберегти</button>
+    </div>
+
+  </div>
 
   
   <script src="js/main.js"></script>

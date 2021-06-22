@@ -174,6 +174,8 @@
         height: calc(100% );
         display: grid;
         grid-template-columns: repeat(7, 1fr);  
+        grid-template-rows: repeat(6, 1fr);
+        grid-auto-rows: 0px;
         &--week{
             height: 30px;
             border-bottom: 0;
@@ -190,15 +192,130 @@
     }
     &__day{
         border-bottom: 1px solid $border-color;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
     }
-
+    &__day-date{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 15px;
+        height: 15px;
+        padding: 15px;
+        cursor: pointer;
+        @extend %btn-hover;
+    }
+    &__event,
+    &__task,
+    &__reminder{
+        margin-bottom: 3px;
+        width: 95%;
+        padding: 4px;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+    }
+    &__event{
+        background: rgb(3, 155, 229);
+    }
+    &__task{
+        background: rgb(66, 133, 244);
+    }
+    &__reminder{
+        background:  rgb(63, 81, 181);
+    }
+}
+.new-event{
+    width: 540px;
+    height: 400px;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    display: none;
+    flex-direction: column;
+    font-size: 18px;
+    background: #fff;
+    box-shadow: -3px 6px 38px 0px rgba(34, 60, 80, 0.43);
+    border-radius: 14px;
+    padding: 0 15px 10px;
+    overflow: hidden;
+    &__header{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px;
+        user-select: none;
+        background: #ccc;
+    }
+    &__content{
+        margin-left: 10%;
+        margin-top: 70px;
+        flex: 1;
+    }
+    &__input-text{
+        height: 40px;
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid rgba(123, 123, 124, 0.4);
+        font-size: 22px;
+        transition: all .2s linear;
+        margin-bottom: 20px;
+        &:focus{
+            border-bottom: 1px solid $accent-color;
+        }
+    }
+    &__btns{
+        display: flex;
+    }
+    &__btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        position: relative;
+        &-block{
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            transition: all .1s linear;
+        }
+        input:checked + &-block {
+            color: $accent-color;
+            background-color: rgba($accent-color, .2);
+        } 
+        border-radius: 4px;
+        input{
+            display: none;
+        }
+    }
+    &__footer{
+        display: flex;
+        justify-content: flex-end;
+    }
+    &__save{
+        padding: 10px;
+        background: $accent-color;
+        border-radius: 4px;
+        color: #fff;
+    }
 }
 
+.new-event--opened{
+    display: flex;
+}
 .dayNotThisMonth{
     color: #70757a;
     font-weight: 400;
 }
 .current_day{
-    background: #1a73e8;
+    background: $accent-color;
     color: #fff;
 }

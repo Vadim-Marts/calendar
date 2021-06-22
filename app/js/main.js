@@ -16,6 +16,7 @@ const   mainCalendarRow = document.querySelector('.bg-calendar__row--days');
         datesList = {};
 let dateAtributeMainCal = '';
 
+
 togleSidebarButton.addEventListener('click', togleSidebar);
 addNewEventBtn.addEventListener('click', showNewEventForm);
 newEventForm.addEventListener('click', event => checkButtonNewEventForm(event));
@@ -226,10 +227,9 @@ function createMainCalendar (argDate) {
                     data-date="${dataAtribute}"
                 >
                     <div class="bg-calendar__day-date">${day}</div>
-                    <div class="bg-calendar__event">
-                        ${datesList[dataAtribute].events}
-                    </div>
-                    ${checkEventType(datesList[dataAtribute].tasks) || ''}
+                    ${checkEventTypeEvent(datesList[dataAtribute].events) || ''}
+                    ${checkEventTypeTask(datesList[dataAtribute].tasks) || ''}
+                    ${checkEventTypeReminder(datesList[dataAtribute].reminders) || ''}
                 </div>`;
         } else {
             content += 
@@ -281,7 +281,7 @@ function createMainCalendar (argDate) {
     
 }
 
-function checkEventTypeTask(eventType) {
+function checkEventTypeEvent(eventType) {
     const arr = eventType;
     let content = '';
     
@@ -311,7 +311,7 @@ function checkEventTypeTask(eventType) {
         return content;
     }
 }
-function checkEventTypeTask(eventType) {
+function checkEventTypeReminder(eventType) {
     const arr = eventType;
     let content = '';
     
@@ -350,6 +350,8 @@ function getNewEventFormFild() {
     const eventType = checkNewEventFormRadio();
     let atribute = dateAtributeMainCal;
 
+    if (!newEventName) {return};    
+
     if(!datesList[atribute]) {
         const arr = [];
         const newEvent = {};
@@ -380,7 +382,6 @@ function checkButtonNewEventForm(eventArg) {
         createMainCalendar(currentDate);
     }
 }
-
 
 
 

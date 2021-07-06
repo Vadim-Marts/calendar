@@ -8,6 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
   <link rel="stylesheet" href="css/style.min.css">
 </head>
@@ -194,31 +195,53 @@
       <button class="new-event__close">&#10006;</button>
     </div>
     <div class="new-event__content">
-      <input class="new-event__input-text" type="text" placeholder="Додайте назву">
+      <input class="new-event__input-title" type="text" placeholder="Додайте назву">
       <div class="new-event__btns">
 
         <label class="new-event__btn">
-          <input type="radio" id="new-event__btn" data-event_btn="events" name="new-event-radiobtn" checked></input>
+          <input type="radio" id="new-event__btn" data-event_btn="event" name="new-event-radiobtn" checked></input>
           <div class="new-event__btn-block">Подія</div>
         </label>
         <label class="new-event__btn">
-          <input type="radio" id="new-event__btn" data-event_btn="tasks" name="new-event-radiobtn"></input>
+          <input type="radio" id="new-event__btn" data-event_btn="task" name="new-event-radiobtn"></input>
           <div class="new-event__btn-block">Завдання</div>
         </label>
         <label class="new-event__btn">
-          <input type="radio" id="new-event__btn" data-event_btn="reminders" name="new-event-radiobtn"></input>
+          <input type="radio" id="new-event__btn" data-event_btn="reminder" name="new-event-radiobtn"></input>
           <div class="new-event__btn-block">Нагадування</div>
         </label>
       </div>
+      <textarea class="new-event__input-text"  placeholder="Додайте опис"></textarea>
     </div>
     <div class="new-event__footer">
       <button class="new-event__save">Зберегти</button>
     </div>
 
   </div>
+  <div class="event-property">
+    <div class="event-property__header">
+      <button class="event-property__edit">
+        <i class="edit bi bi-pencil "></i>
+      </button>
+      <button class="event-property__delete">
+        <i class="delete bi bi-trash"></i>
+      </button>
+      <button class="event-property__close">
+        <i class="close bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="event-property__content">
+      <div class="event-property__title">Test</div>
+      <div class="event-property__subtitle">
+        <span class="event-property__date"></span>
+      </div>
+      <div class="event-property__text"></div>
+    </div>
+  </div>
 
   
   <script src="js/main.js"></script>
+  <!-- <script src="js/main_1.0.js"></script> -->
 </body>
 
 </html>

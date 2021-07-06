@@ -287,11 +287,11 @@ function EventForm() {
 
             } else if(!eventList[dataAtribute][eventTitle]) {  
                 eventList[dataAtribute][eventTitle] = createObj();
-            } else {
-               const newEvent = {};
+            } else  if (eventList[dataAtribute][eventTitle]) {
+               let newEvent = {};
                 
-                eventList[dataAtribute] = newEvent;
-                newEvent[eventTitle] = createObj();
+                newEvent = createObj();
+                eventList[dataAtribute][eventTitle] = newEvent;
             }
 
             saveEventList();

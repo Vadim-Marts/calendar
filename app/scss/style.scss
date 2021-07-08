@@ -332,6 +332,9 @@
 .current_day{
     background: $accent-color;
     color: #fff;
+    &:hover{
+        background: rgba($accent-color, .8);
+    }
 }
 
 .event-property{

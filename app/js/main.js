@@ -1,7 +1,4 @@
 const topNav = document.querySelector('.top-nav');
-const calendarMain = new Calendar();
-const eventForm = new EventForm();
-const eventProperty = new EventProperty();
 
 let eventList = {};
 let eventListJson;
@@ -13,42 +10,37 @@ eventListJson =  JSON.parse(a);
 eventList = isEmpty(eventListJson) ? {} : eventListJson;
 
 
+
+topNav.addEventListener('click', topNavButtons);
+
+const calendarMain = new Calendar();
 calendarMain.render();
 changeDateStr();
 
 
-topNav.addEventListener('click', topNavButtons);
+function topNavButtons(e) {
+    const prev = e.target.closest('.prev-btn');
+    const next = e.target.closest('.next-btn');
+    const now = e.target.closest('.top-nav__today');
+    const sidebarBtn = e.target.closest('.top-nav__main-menu-btn');
 
-function isEmpty(obj) {
-    for (let key in obj) {
-
-      return false;
-    }
-    return true;
-}
-
-function topNavButtons(event) {
-    const arrow = event.target.offsetParent.classList[0];
-    const now = event.target.classList[0];
-    const sidebarBtn = event.target.classList[0];
     
-    switch (arrow) {
-        case 'next-btn':
-            calendarMain.changeMonth(true);
-            changeDateStr();
-            break;
-        case 'prev-btn':
-            calendarMain.changeMonth();
-            changeDateStr();
-            break;
+    if (prev) {
+        calendarMain.changeMonth();
+        changeDateStr();
     }
 
-    if (now === 'top-nav__today') {
+    if (next) {
+        calendarMain.changeMonth(true);
+        changeDateStr();
+    }
+
+    if (now) {
         calendarMain.setCurrentMonth();
         changeDateStr();
     }
 
-    if (sidebarBtn === 'icon-dehaze') {
+    if (sidebarBtn) {
         const sidebar = document.querySelector('.sidebar');
 
         sidebar.classList.toggle('sidebar--hide');
@@ -66,40 +58,155 @@ function changeDateStr() {
         monthName[i].innerText = monthsArr[month]; 
         yearName[i].innerText = year;   
     }
-}
+} 
 
-function setFormCoords(e, formWidth, formHeight, form) {
-    const step = 50;
-    let xCoord = e.clientX;
-    let yCoord = e.clientY;
+function isEmpty(obj) {
+    for (let key in obj) {
 
-
-    dataAtribute = e.target.dataset.date ||  e.target.parentElement.dataset.date; 
-    
-    if (xCoord - formWidth - step < 0) {
-        xCoord = xCoord + step;
-    } else {
-        xCoord = xCoord - formWidth - step;
+      return false;
     }
-
-    if (yCoord + formHeight > window.innerHeight){
-        yCoord = yCoord - formHeight;
-    } else {
-        yCoord = yCoord;
-
-    }
-
-    form.style.left = xCoord + 'px';
-    form.style.top = yCoord + 'px';
+    return true;
 }
-
 function saveEventList() {
     eventListJson = JSON.stringify(eventList);
     localStorage.setItem('eventList', eventListJson);
 }
 
+
+class EventForm {
+    constructor(selector) {
+        this.selector = selector;
+        this.$el = document.querySelector(`.${this.selector}`);
+    }
+
+    show(e) {
+        this.$el.classList.add(`${this.selector}--opened`);
+        this.setFormCoords(e);
+
+        dataAtribute = e.target.closest('[data-data]').dataset.data;
+    }
+    hide() {
+        this.$el.classList.remove(`${this.selector}--opened`);
+    }
+    setFormCoords(e) {
+        const step = 50;
+        const width = this.$el.offsetWidth;
+        const height = this.$el.offsetHeight;
+        let xCoord = e.clientX;
+        let yCoord = e.clientY;
+        
+        if (xCoord - width - step < 0) {
+            xCoord = xCoord + step;
+        } else {
+            xCoord = xCoord - width - step;
+        }
+    
+        if (yCoord + height > window.innerHeight){
+            yCoord = yCoord - height;
+        } else {
+            yCoord = yCoord;
+    
+        }
+    
+        this.$el.style.left = xCoord + 'px';
+        this.$el.style.top = yCoord + 'px';
+    }
+    
+}
+
+class CreateEventForm extends EventForm {
+
+    constructor(selector) {
+        super(selector);
+        this.input = document.querySelector(`.${this.selector}__input-title`);
+        this.description = document.querySelector(`.${this.selector}__input-text`);
+        this.buttonsList = document.querySelectorAll(`#${this.selector}__btn`);
+    }
+
+    save() {
+        const eventTitle = this.input.value;
+        const eventDescription = this.description.value;
+        const eventType = this.checkEventType();
+        let newEvent;
+
+        if(!eventTitle) {return};
+
+        if(!eventList[dataAtribute]) {
+            const arr = [];
+
+            newEvent = this.createObj(eventTitle, eventDescription, eventType);
+            arr.push(newEvent);
+            
+            eventList[dataAtribute] = arr;
+        } else if( !isEmpty(eventList[dataAtribute]) ) {
+            if ( this.isEventDuplicate(eventTitle, eventType) ) {
+                alert('Така подія існує, змініть назву або тип події');
+                return;
+            }
+
+            newEvent = this.createObj(eventTitle, eventDescription, eventType);
+            eventList[dataAtribute].push(newEvent);
+        }
+        
+        saveEventList();
+        this.hide();
+        this.clear();
+        calendarMain.render();
+    }
+    clear() {
+        this.buttonsList[0].checked = 'checked';
+        this.input.value = '';    
+        this.description.value = '';
+    }
+    createObj(eventTitle, eventDescription, eventType) {
+        const details = {};   
+        
+        details.title = eventTitle;
+        details.description = eventDescription;
+        details.event = eventType;
+
+        return details;
+    }
+    checkEventType() {
+        let eventType;
+
+        this.buttonsList.forEach(elem => {
+            if(elem.checked) { eventType = elem.dataset.event_btn }
+        });
+
+        return eventType;
+    }
+    isEventDuplicate(EventTitle, EventType) {
+        let isDuplicate;
+
+        isDuplicate = eventList[dataAtribute].some( el => el.title === EventTitle && el.event === EventType );
+
+        return isDuplicate;        
+    }
+};
+
+const createEventForm = new CreateEventForm('new-event');
+const propertyEventForm = new EventForm('event-property');
+
+createEventForm.$el.addEventListener('click', e => {
+    const closeBtn = e.target.matches(`.${createEventForm.selector}__close`);
+    const saveBtn = e.target.matches(`.${createEventForm.selector}__save`);
+
+    if (closeBtn) createEventForm.hide();
+    if (saveBtn) createEventForm.save();
+});
+propertyEventForm.$el.addEventListener('click', e => {
+    const closeBtn = e.target.matches(`.${createEventForm.selector}__close`);
+    const saveBtn = e.target.matches(`.${createEventForm.selector}__save`);
+
+    if (closeBtn) createEventForm.hide();
+});
+
+
+
+
 function Calendar() {
-    const calendar = document.querySelector('.bg-calendar__row--days');
+    
     const currentDate = new Date();
     const main = {
         dayCell: 'bg-calendar__day',
@@ -107,89 +214,70 @@ function Calendar() {
         day: 'bg-calendar__day-date',
         currentDay: 'current_day'
     };
-    const eventClases = {
-        event: 'bg-calendar__event',
-        task: 'bg-calendar__task',
-        reminder: 'bg-calendar__reminder',
-    };
-    
-    const instance = {
+        
+    const instance =  {
         
         render() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const date = new Date(year,month);
-
             let content = '';
+    
+            const dateCopy = new Date(currentDate);
+            for (let day = (1 - this.firsDayOfWeek); day <= (this.daysCount + (6 - this.lastDayOfWeek)); day++) {
+                dateCopy.setDate(1);
+                dateCopy.setFullYear(currentDate.getFullYear());
+                dateCopy.setMonth(currentDate.getMonth());
+                dateCopy.setDate(day);
+    
+                let isInactive;
+                if (day <= 0 || day > this.daysCount) {
+                    isInactive = true;
+                }
 
-            for (let i = date.getDay(); i > 0; i--) {
-                let date = new Date(year, month, 0);
-                date.setDate(date.getDate() - i + 1);
-                const day = date.getDate();
-
-                content += 
-                    `<div 
-                        class="${main.dayCell} ${main.inactive}"
-                        data-date="${this.getDateStr(date)}"
-                    >
-                        <div class="${main.day}">${day}</div>
-                    </div>`;
-            }
-        
-            while (date.getMonth() === month) {
-                const day = date.getDate();              
-                
                 let isCurrentDay;
                 const currentDateStr = this.getDateStr(new Date());
-                const dateStr = this.getDateStr(date); 
-                if (currentDateStr === dateStr) {
+                const data_date = this.getDateStr(dateCopy); 
+
+                if (currentDateStr === data_date) {
                     isCurrentDay = true;
                 }
                 
-                if (eventList.hasOwnProperty(dateStr)) {
 
-                    content += 
-                    `<div 
-                        class="${main.dayCell}"
-                        data-date="${dateStr}"
+                content += `
+                    <div 
+                        data-data="${data_date}"
+                        class="${main.dayCell} ${isInactive ? 'inactive' : ''}"
                     >
-                        <div class="${main.day} ${isCurrentDay ? main.currentDay : ''}">${day}</div>
-                        ${this.createEventCell(dateStr)}
-                    </div>`;
-                } else {
-                    content += 
-                    `<div 
-                        class="${main.dayCell}"
-                        data-date="${this.getDateStr(date)}"
-                    >
-                        <div class="${main.day} ${isCurrentDay ? main.currentDay : ''}">${day}</div>
-                    </div>`;
-                }
-
-                
-                date.setDate(date.getDate() + 1);
+                        <div class="${main.day} ${isCurrentDay ? main.currentDay : ''}">${dateCopy.getDate()}</div>
+                        ${this.hasEvent(data_date) || ''}                    
+                    </div>
+                `;
             }
-        
-            if (date.getDay() !== 0) {
-        
-                for (let i = date.getDay(); i < 7; i++) {
-                    let j = 1;
-                    const day = date.getDate();
-                    date.setDate(date.getDate() + j);
-                    
-                    content += 
-                        `<div 
-                            class="${main.dayCell} ${main.inactive}"
-                            data-date=""
-                        >
-                            <div class="${main.day}">${day}</div>
-                        </div>`;
-
-                    j++;
-                }
-            }
-        
+    
             document.querySelector('.bg-calendar__row--days').innerHTML = content;
+        },
+        get firsDayOfWeek() {
+            return this.getDayOfWeek(1);
+        },
+        get lastDayOfWeek() {
+            return this.getDayOfWeek(this.daysCount);
+        },
+        get daysCount() {
+            const date = new Date(currentDate);
+            const currentMonth = date.getMonth();
+
+            date.setMonth(currentMonth + 1);
+            date.setDate(0);
+    
+            return date.getDate();
+        },
+        get dateStr() {
+            return `${currentDate.getMonth()}-${currentDate.getFullYear()}`
+        },
+        getDayOfWeek(day) {
+            const date = new Date(currentDate);
+            
+            date.setDate(day);
+            
+            return date.getDay();
         },
         getDateStr(date) {
             const year = date.getFullYear();
@@ -210,221 +298,35 @@ function Calendar() {
             currentDate.setDate(date.getDate());
             instance.render();
         },
-        get dateStr() {
-            return `${currentDate.getMonth()}-${currentDate.getFullYear()}`
-        },
-        createEventCell(data) {
-            let content = '';
+        hasEvent(atribute) {
+            if ( eventList.hasOwnProperty(atribute) ) {
+                let content = '';
 
+                let div = document.createElement('div');
+                div.classList.add(`bg-calendar__event`);
+                div.innerText = '1';
 
-            for (let key in eventList[data]) {
-                const clas = eventList[data][key].event;
+                 eventList[atribute].forEach(el => {
+                    content += `<div class="event bg-calendar__${el.event}">${el.title}</div>`;
+                });
 
-                content += `
-                    <div class="${eventClases[clas]}">
-                        ${eventList[data][key].title}
-                    </div>
-                `
+                return content;
             }
-
-            return content;
         }
     }
 
-    calendar.addEventListener('click', e => {
-        const target = e.target.classList[0];
-        switch (target) {
-            case main.dayCell: 
-                eventForm.show(e);
-                break;
+    document.querySelector('.bg-calendar__row--days').addEventListener('click', e => {
+        const dayCell = e.target.matches('.bg-calendar__day');
+        const event = e.target.matches('.event');
+       
+        if (dayCell) createEventForm.show(e);
+
+        if (event) {
+            propertyEventForm.show(e);
         }
-        if (target === eventClases.event || target === eventClases.task || target === eventClases.reminder) {
-            eventProperty.show(e);
-            // eventForm.show(e);
-            // eventForm.change(e);
-        }
+
+        console.log(event);
     });
-
-    return instance;
-}
-
-function EventForm() {
-    const form = document.querySelector('.new-event');
-    const formHeader = document.querySelector('.new-event__header');
-    const buttonsList = document.querySelectorAll('#new-event__btn');
-    const input = document.querySelector('.new-event__input-title');
-    const description = document.querySelector('.new-event__input-text');
-
-    const instance  = {
-        show(event) {
-            const formWidth = 540;
-            const formHeight = 400;
-            
-            form.classList.add('new-event--opened');
-
-            dataAtribute = event.target.dataset.date ||  event.target.parentElement.dataset.date; 
-            
-            setFormCoords(event, formWidth, formHeight, form)
-        },
-        close() {
-            buttonsList[0].checked = 'checked';
-            input.value = '';    
-            description.value = '';
-            form.classList.remove('new-event--opened');
-        },
-        save() {
-            const eventTitle = input.value;
-            const eventDescription = description.value;
-            const eventType = this.checkEventType();
-            
-            if(!eventTitle) {return};
-
-            if(!eventList[dataAtribute]) {
-                const newEvent = {};
-                
-                eventList[dataAtribute] = newEvent;
-                newEvent[eventTitle] = createObj();
-
-            } else if(!eventList[dataAtribute][eventTitle]) {  
-                eventList[dataAtribute][eventTitle] = createObj();
-            } else  if (eventList[dataAtribute][eventTitle]) {
-               let newEvent = {};
-                
-                newEvent = createObj();
-                eventList[dataAtribute][eventTitle] = newEvent;
-            }
-
-            saveEventList();
-
-            this.close();
-            calendarMain.render();
-
-            function createObj() {
-                const details = {};   
-                
-                details.title = eventTitle;
-                details.description = eventDescription;
-                details.event = eventType;
-
-                return details;
-            }
-        },
-        checkEventType() {
-            let eventType;
-
-            buttonsList.forEach(elem => {
-                if(elem.checked) { eventType = elem.dataset.event_btn }
-            });
-
-            return eventType;
-        },
-        change(event) {
-            instance.show(event);
-            const data = event.target.parentElement.dataset.date;
-            const name = event.target.innerText;
-
-            input.value = eventList[data][name].title;
-            description.value = eventList[data][name].description;
-            buttonsList.forEach(el => {
-                if(el.dataset.event_btn === eventList[data][name].event) {
-                    el.checked = 'checked';
-                }
-            });
-
-        }
-    }
-
-    form.addEventListener('click', e => {
-        const button = e.target.classList[0];
-
-        switch (button) {
-            case 'new-event__close': 
-                return instance.close();  
-            case 'new-event__save':
-                return instance.save();
-        }
-    });
-
-
-
-
     
-
     return instance;
 }
-
-function EventProperty() {
-    const form = document.querySelector('.event-property');
-    const eventTitle = document.querySelector('.event-property__title');
-    const eventText = document.querySelector('.event-property__text');
-    const eventDate = document.querySelector('.event-property__date');
-    const weekDay = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота'];
-    const months = ['Січня', 'Лютого', 'Березня', 'Квітня', 'Травня', 'Червня', 'Липня', 'Серпня', 'Вересня', 'Жовтня', 'Листопада', 'Грудня'];
-    let atribute;
-    let eventCopy;
-
-    const instance = {
-        show(event) {
-            eventCopy = event;
-            const formWidth = 450;
-            const formHeight = 150;
-            
-            const name = event.target.innerText;
-            const data = event.target.parentElement.dataset.date;
-            const description = eventList[data][name].description;
-            atribute = data;
-            
-            eventTitle.innerText = name;
-            eventText.innerText = description;
-            eventDate.innerText = instance.getDate(data);
-            form.classList.add('event-property--opened');
-            setFormCoords(event, formWidth, formHeight, form) ;
-            
-        },
-        close() {
-            form.classList.remove('event-property--opened');
-        },
-        remove() {
-            const obj = eventTitle.innerText;
-            delete eventList[atribute][obj];
-            
-            if (isEmpty(eventList[atribute])) {
-                delete eventList[atribute];
-            }
-
-            saveEventList();
-            instance.close();
-            calendarMain.render();
-        },
-        getDate(data) {
-            const newDate = new Date(data);
-            let str = '';
-
-            str = `${weekDay[newDate.getDay()]}, ${newDate.getDate()} ${months[newDate.getMonth()]}`;
-            
-            return str;
-        } 
-    }
-
-    form.addEventListener('click', e => {
-        const button = e.target.classList[0];
-
-        switch (button) {
-            case 'close':
-                instance.close(); 
-                break;
-            case 'delete':
-                instance.remove();
-                break;
-            case 'edit':
-                instance.close(); 
-                eventForm.change(eventCopy);
-                break;
-
-        }
-
-    });
-
-    return instance;
-}
-

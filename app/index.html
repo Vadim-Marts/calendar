@@ -44,9 +44,25 @@
             <button class="top-nav__settings top-nav__btn">
               <i class="icon-settings"></i>
             </button>
-            <div class="top-nav__choice-veiw">
+            <!-- <div class="top-nav__choice-veiw">
               <span>Місяць</span>
               
+            </div> -->
+            <div class="select-view">
+              <div class="select-view__title">Title</div>
+              <div class="select-view__content">
+                <input type="radio" id="select-day" name="select-view">
+                <label class="select-view__btn" for="select-day">Day</label>
+            
+                <input type="radio" id="select-week" name="select-view">
+                <label class="select-view__btn" for="select-week">Week</label>
+            
+                <input type="radio" id="select-month" name="select-view" checked>
+                <label class="select-view__btn" for="select-month">Month</label>
+            
+                <input type="radio" id="select-year" name="select-view">
+                <label class="select-view__btn" for="select-year">Year</label>
+              </div>
             </div>
           </div>
         </div>
@@ -57,7 +73,8 @@
       <div class="sidebar">
         <div class="container">
           <button class="create-btn">
-            Створити
+            <span>+</span>
+            <span class="create-btn__text">Створити</span>
           </button>
           <div class="sm-calendar">
             <div class="sm-calendar__header">
@@ -75,14 +92,14 @@
               </div>
             </div>
             <div class="sm-calendar__body">
-              <div class="sm-calendar__week-items">
-                <div class="sm-calendar__week-item">Нд</div>
-                <div class="sm-calendar__week-item">Пн</div>
-                <div class="sm-calendar__week-item">Вт</div>
-                <div class="sm-calendar__week-item">Ср</div>
-                <div class="sm-calendar__week-item">Чт</div>
-                <div class="sm-calendar__week-item">Пт</div>
-                <div class="sm-calendar__week-item">Сб</div>
+              <div class="sm-calendar__week-days">
+                <div class="sm-calendar__week-day">Нд</div>
+                <div class="sm-calendar__week-day">Пн</div>
+                <div class="sm-calendar__week-day">Вт</div>
+                <div class="sm-calendar__week-day">Ср</div>
+                <div class="sm-calendar__week-day">Чт</div>
+                <div class="sm-calendar__week-day">Пт</div>
+                <div class="sm-calendar__week-day">Сб</div>
               </div>
               <div class="sm-calendar__days">
                 <!-- <div class="sm-calendar__day">1</div>
@@ -126,7 +143,7 @@
         </div>
       </div>
       <main class="main">
-        <div class="bg-calendar">
+        <div class="bg-calendar bg-calendar--month">
           <div class="bg-calendar__row bg-calendar__row--week">
             <div class="bg-calendar__week-day">Нд</div>
             <div class="bg-calendar__week-day">Пн</div>
@@ -136,52 +153,28 @@
             <div class="bg-calendar__week-day">Пт</div>
             <div class="bg-calendar__week-day">Сб</div>
           </div>
-          <div class="bg-calendar__row bg-calendar__row--days">
+          <div class="bg-calendar__row bg-calendar__days">
             <!-- <div class="bg-calendar__day">
               <div class="bg-calendar__day-date">20</div>
               <div class="bg-calendar__event">New event</div>
-            </div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div>
-            <div class="bg-calendar__day"></div> -->
+            </div> -->
+          </div>
+        </div>
+        <div class="bg-calendar bg-calendar--week">
+          <div class="bg-calendar__row bg-calendar__row--week">
+            <div class="bg-calendar__week-day">Нд</div>
+            <div class="bg-calendar__week-day">Пн</div>
+            <div class="bg-calendar__week-day">Вт</div>
+            <div class="bg-calendar__week-day">Ср</div>
+            <div class="bg-calendar__week-day">Чт</div>
+            <div class="bg-calendar__week-day">Пт</div>
+            <div class="bg-calendar__week-day">Сб</div>
+          </div>
+          <div class="bg-calendar__row bg-calendar__days">
+            <!-- <div class="bg-calendar__day">
+              <div class="bg-calendar__day-date">20</div>
+              <div class="bg-calendar__event">New event</div>
+            </div> -->
           </div>
         </div>
       </main>
@@ -286,6 +279,13 @@
     </div>
   </div>
 
+  <!-- <div class="select-view">
+    <button class="select-view__btn">День</button>
+    <button class="select-view__btn">Тиждень</button>
+    <button class="select-view__btn">Місяць</button>
+    <button class="select-view__btn">Рік</button>
+  </div> -->
+  
   
   <script src="js/main.js"></script>
   <!-- <script src="js/main_1.1.js"></script> -->

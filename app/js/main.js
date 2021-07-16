@@ -1,4 +1,5 @@
 const topNav = document.querySelector('.top-nav');
+const sidebar = document.querySelector('.sidebar');
 
 let eventList = {};
 let eventListJson;
@@ -10,6 +11,7 @@ eventListJson =  JSON.parse(a);
 eventList = isEmpty(eventListJson) ? {} : eventListJson;
 
 topNav.addEventListener('click', topNavButtons);
+sidebar.addEventListener('click', sidebarButtons);
 
 function isEmpty(obj) {
     for (let key in obj) {
@@ -28,11 +30,15 @@ class EventForm {
         this.$el = document.querySelector(`.${this.selector}`);
     }
 
-    show(e) {
+    show(e, isToday) {
         this.$el.classList.add(`${this.selector}--opened`);
         this.setFormCoords(e);
-
-        dataAtribute = e.target.closest('[data-data]').dataset.data;
+        
+        if (isToday) {
+            dataAtribute = calendarMonth.getDateStr(new Date());
+        } else {
+            dataAtribute = e.target.closest('[data-data]').dataset.data;
+        }
     }
     hide() {
         this.$el.classList.remove(`${this.selector}--opened`);
@@ -120,7 +126,7 @@ class CreateEventForm extends EventForm {
         saveEventList();
         this.hide();
         this.clear();
-        calendarMain.render();
+        calendarMonth.render();
     }
     clear() {
         this.buttonsList[0].checked = 'checked';
@@ -240,7 +246,7 @@ class PropertyEventForm extends EventForm {
 
         saveEventList();
         this.hide();
-        calendarMain.render();
+        calendarMonth.render();
     }
     getDateStr(data) {
         const newDate = new Date(data);
@@ -268,28 +274,23 @@ class Calendar {
     
     currentDate = new Date();
     main = {
-        dayCell: 'bg-calendar__day',
+        selector: '',
+        dayCell: '',
+        day: '',
         inactive: 'inactive',
-        day: 'bg-calendar__day-date',
         currentDay: 'current_day'
     };
-    constructor() {
-        document.querySelector('.bg-calendar__row--days').addEventListener('click', e => {
-            const dayCell = e.target.matches(`.${this.main.dayCell}`);
-            const event = e.target.matches('.event');
-            
-            if (dayCell) createEventForm.show(e);
-        
-            if (event) {
-                propertyEventForm.show(e);
-            }
-        });
+    constructor(selector) {
+        this.main.selector = selector
+        this.main.dayCell = `${selector}__day`;
+        this.main.day = `${selector}__day-date`;
+
     }
     render() {
         let content = '';
 
         const dateCopy = new Date(this.currentDate);
-        for (let day = (1 - this.firsDayOfWeek); day <= (this.daysCount + (6 - this.lastDayOfWeek)); day++) {
+        for (let day = (1 - this.firsDayOfWeek); day <= (this.daysCount + (13 - this.lastDayOfWeek)); day++) {
             dateCopy.setDate(1);
             dateCopy.setFullYear(this.currentDate.getFullYear());
             dateCopy.setMonth(this.currentDate.getMonth());
@@ -315,12 +316,12 @@ class Calendar {
                     class="${this.main.dayCell} ${isInactive ? 'inactive' : ''}"
                 >
                     <div class="${this.main.day} ${isCurrentDay ? this.main.currentDay : ''}">${dateCopy.getDate()}</div>
-                    ${this.hasEvent(data_date) || ''}                    
+                   
                 </div>
             `;
         }
 
-        document.querySelector('.bg-calendar__row--days').innerHTML = content;
+        document.querySelector(`.${this.main.selector}__days`).innerHTML = content;
     }
     get firsDayOfWeek() {
         return this.getDayOfWeek(1);
@@ -366,36 +367,101 @@ class Calendar {
         this.currentDate.setDate(date.getDate());
         this.render();
     }
+}
+
+class CalendarMonth extends Calendar {
+    constructor(selector) {
+        super(selector)
+        document.querySelector(`.${selector}__days`).addEventListener('click', e => {
+            const dayCell = e.target.matches(`.${this.main.dayCell}`);
+            const event = e.target.matches('.event');
+            
+            if (dayCell) createEventForm.show(e);
+        
+            if (event) {
+                propertyEventForm.show(e);
+            }
+        });
+        
+    }
+    render() {
+        super.render();
+        const monthDays = document.querySelectorAll(`.${this.main.selector}__day`);
+
+        monthDays.forEach(day => {
+            const dataAtribute = day.dataset.data;
+
+            if ( this.hasEvent(dataAtribute) ) {
+                let arr = [];
+
+                eventList[dataAtribute].forEach(el => {
+                    const div = document.createElement('div');
+                    
+                    div.classList.add('event', `${this.main.selector}__${el.event}`);
+                    div.innerText = `${el.title}`;
+                    arr.push(div);
+                });
+                arr.forEach(el => {
+                    day.appendChild(el);
+                });
+            }
+        });
+    }
     hasEvent(atribute) {
-        if ( eventList.hasOwnProperty(atribute) ) {
-            let content = '';
+        const has = Object.prototype.hasOwnProperty;
 
-            let div = document.createElement('div');
-            div.classList.add(`bg-calendar__event`);
-            div.innerText = '1';
+        if ( has.call(eventList, atribute) ) {return true;}
+    }
+}
+class SidebarCalendar extends Calendar {
+    constructor(selector) {
+        super(selector);
+        document.querySelector(`.${selector}__days`).addEventListener('click', e => {
+            const dayCell = e.target.closest(`.${this.main.dayCell}`);
 
-                eventList[atribute].forEach(el => {
-                content += `<div class="event bg-calendar__${el.event}">${el.title}</div>`;
-            });
+            if (dayCell) createEventForm.show(e);
+        });
+        document.querySelector(`.${selector}__header`).addEventListener('click', e => {
+            const nextMonth = e.target.closest('.next-btn');
+            const prevMonth = e.target.closest('.prev-btn');
+            const isSidebar = true;
 
-            return content;
-        }
+            if (prevMonth) {
+                this.changeMonth();
+                changeDateStr(isSidebar);
+            };
+            if (nextMonth) {
+                this.changeMonth(true)
+                changeDateStr(isSidebar);
+            };
+        });
     }
 }
 
-const calendarMain = new Calendar();
-calendarMain.render();
 
-function changeDateStr() {
+const calendarMonth = new CalendarMonth('bg-calendar');
+calendarMonth.render();
+const calendarSidebar = new SidebarCalendar('sm-calendar');
+calendarSidebar.render();
+
+
+function changeDateStr(isSidebar) {
     const monthsArr = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад',  'Грудень'];
     const monthName = document.querySelectorAll('.current__month'),
           yearName = document.querySelectorAll('.current__year');
-    const month = calendarMain.dateStr.split('-').slice(0,1).join('');
-    const year = calendarMain.dateStr.split('-').slice(1).join('');
+    const month = calendarMonth.dateStr.split('-').slice(0,1).join('');
+    const year = calendarMonth.dateStr.split('-').slice(1).join('');
 
-    for (let i = 0; i < 2; i++) {
-        monthName[i].innerText = monthsArr[month]; 
-        yearName[i].innerText = year;   
+    if (isSidebar) {
+        const month = calendarSidebar.dateStr.split('-').slice(0,1).join('');
+        const year = calendarSidebar.dateStr.split('-').slice(1).join('');
+        monthName[1].innerText = monthsArr[month]; 
+        yearName[1].innerText = year; 
+    } else {
+        for (let i = 0; i < 2; i++) {
+            monthName[i].innerText = monthsArr[month]; 
+            yearName[i].innerText = year;   
+        }
     }
 } 
 changeDateStr();
@@ -405,26 +471,49 @@ function topNavButtons(e) {
     const next = e.target.closest('.next-btn');
     const now = e.target.closest('.top-nav__today');
     const sidebarBtn = e.target.closest('.top-nav__main-menu-btn');
-
+    const viewTitle = document.querySelector('.select-view__title');
+    
+    const selectItems = document.querySelector('.select-view__content');
+    
     
     if (prev) {
-        calendarMain.changeMonth();
+        calendarMonth.changeMonth();
+        calendarSidebar.changeMonth();
         changeDateStr();
     }
 
     if (next) {
-        calendarMain.changeMonth(true);
+        calendarMonth.changeMonth(true);
+        calendarSidebar.changeMonth(true);
         changeDateStr();
     }
 
     if (now) {
-        calendarMain.setCurrentMonth();
+        calendarMonth.setCurrentMonth();
+        calendarSidebar.setCurrentMonth();
         changeDateStr();
     }
 
     if (sidebarBtn) {
         const sidebar = document.querySelector('.sidebar');
+        const newEventBtn = document.querySelector('.create-btn');
 
         sidebar.classList.toggle('sidebar--hide');
+        newEventBtn.classList.toggle('create-btn--show');
+    }
+
+    viewTitle.innerText = ''
+
+    if (viewTitle) {
+        selectItems.classList.toggle('select-view__content--show');
     }
 }
+function sidebarButtons(e) {
+    const addNewEvent = e.target.closest('.create-btn');
+
+    if (addNewEvent) {
+        const isToday = true;
+        createEventForm.show(e, isToday);
+    }
+}
+

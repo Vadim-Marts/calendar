@@ -4,7 +4,11 @@
 @import 'libs';
 @import 'global';
 
-
+.header,
+.sidebar,
+.main{
+    user-select: none;
+}
 .header{
     position: relative;
     top: 0;
@@ -36,8 +40,7 @@
         height: 40px;
         @extend %btn-hover;
     }
-    &__today,
-    &__choice-veiw{
+    &__today{
         font-size: 14px;
         font-weight: 500;
         padding: 17px;
@@ -93,16 +96,23 @@
     height: 100%;
     border-right: 1px solid $border-color;
     padding: 20px 0;
+    padding-top: 90px;
     transition: all .4s linear;
     &--hide{
         margin-left: -350px;
+        
     }
 }
 .create-btn{
-    position: relative;
-    width: 146px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top: 88px;
+    left: 20px;
+    max-width: 146px;
     height: 48px;
-    padding-left: 30px;
+    padding: 15px;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: .25px;
@@ -116,14 +126,16 @@
         box-shadow: 0px 4px 20px 0px rgba(34, 60, 80, 0.2);
         background: rgba(220, 225, 247, 0.596);
     }
-    &::before{
-        content: '+';
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 15px;
+    span:first-child{
         font-size: 50px;
         font-weight: 300;
+        margin: 3px;
+    }
+    &--show{
+        width: 48px;
+        & .create-btn__text {
+            display: none;
+        }
     }
 }
 .sm-calendar{
@@ -139,11 +151,11 @@
         display: grid;
         gap: 6px; 
     }
-    &__week-items{
+    &__week-days{
         display: grid;
         grid-template: 1fr / repeat(7, 1fr);
     }
-    &__week-item,
+    &__week-day,
     &__day{       
         width: 15px;
         height: 15px;
@@ -153,6 +165,10 @@
         align-items: center;
         cursor: pointer;
         font-weight: 500;
+        @extend %btn-hover;
+    }
+    &__day-date{
+        padding: 5px;
         @extend %btn-hover;
     }
     &__days{
@@ -174,8 +190,8 @@
         height: calc(100% );
         display: grid;
         grid-template-columns: repeat(7, 1fr);  
-        // grid-template-rows: repeat(6, 1fr);
-        // grid-auto-rows: 0px;
+        grid-template-rows: repeat(6, 1fr);
+        grid-auto-rows: 0px;
         &--week{
             height: 30px;
             border-bottom: 0;
@@ -229,10 +245,9 @@
     }
 }
 .new-event,
-.event-property {
+.event-property,
+.select-vieww {
     position: absolute;
-    top: 40px;
-    left: 40px;
     display: none;
     flex-direction: column;
     font-size: 18px;
@@ -390,6 +405,65 @@
     &--opened{
         display: flex;
     }
+}
+
+.select-view{
+    // width: 200px;
+    // display: flex;
+    // flex-direction: column;
+    // padding: 10px 5px;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    cursor: pointer;
+    &__title{
+        font-weight: 500;
+        padding: 17px;
+        line-height: 0;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+        @extend %btn-hover;
+    }
+    &__content{
+        position: absolute;
+        top: 45px;
+        right: 0;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        background: #fff;
+        font-size: 16px;
+        animation-fill-mode: forwards;
+        animation: form-anim .2s linear;
+        box-shadow: -3px 6px 38px 0px rgba(34, 60, 80, 0.43);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: all .3s;
+        &--show{
+            width: 170px;
+            height: 190px;
+            opacity: 1;
+        }
+    }
+    input{
+        display: none;
+    }
+    &__content{
+        display: flex;
+        flex-direction: column;
+    }
+    &__btn{
+        width: 100%;
+        padding: 10px;
+        cursor: pointer;
+        @extend %btn-hover;
+        &:hover{
+            border-radius: 0;
+        }
+    }
+
 }
 
 @keyframes form-anim {

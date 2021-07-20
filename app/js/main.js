@@ -79,6 +79,7 @@ class CreateEventForm extends EventForm {
         this.inputHours = document.querySelector(`.${this.selector}__hours`);
         this.inputMinutes = document.querySelector(`.${this.selector}__minutes`);
         this.buttonsList = document.querySelectorAll(`#${this.selector}__btn`);
+        this.header = document.querySelector(`.${this.selector}__header`)
 
         this.$el.addEventListener('click', e => {
             const closeBtn = e.target.matches(`.${this.selector}__close`);
@@ -87,6 +88,30 @@ class CreateEventForm extends EventForm {
             if (closeBtn) this.hide();
             if (saveBtn) this.save();
         });
+
+        this.header.onmousedown = (e) => {
+            const form = this.$el;
+            let shiftX = e.clientX - form.getBoundingClientRect().left;
+            let shiftY = e.clientY - form.getBoundingClientRect().top;
+
+            moveAt(e.pageX, e.pageY);
+
+            function moveAt(pageX, pageY) {
+                form.style.left = pageX - shiftX +'px';
+                form.style.top = pageY - shiftY +'px';
+            }
+
+            function onMouseMove(e) {
+                moveAt(e.pageX, e.pageY)
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            form.onmouseup = function() {
+                document.removeEventListener('mousemove', onMouseMove);
+                form.onmouseup = null;
+              };
+        }
     }
 
     save() {
@@ -191,6 +216,11 @@ class CreateEventForm extends EventForm {
         eventList[dataAtribute].sort((a, b) => {
             return a.time - b.time;
         });
+    }
+    moveForm() {
+        this.$el.addEventListener('onmousedown', (e) => {
+            console.log('y')
+        })
     }
 };
 class PropertyEventForm extends EventForm {
@@ -502,11 +532,20 @@ function topNavButtons(e) {
         newEventBtn.classList.toggle('create-btn--show');
     }
 
-    viewTitle.innerText = ''
+    changeView(viewTitle)
 
     if (viewTitle) {
         selectItems.classList.toggle('select-view__content--show');
     }
+}
+function changeView(element) {
+    const selectItems = document.querySelectorAll('.select-view__input');
+    
+    selectItems.forEach(el => {
+        if (el.checked) {
+            element.innerText = el.dataset.name;
+        }
+    });
 }
 function sidebarButtons(e) {
     const addNewEvent = e.target.closest('.create-btn');

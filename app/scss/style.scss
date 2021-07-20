@@ -185,6 +185,9 @@
     justify-content: stretch;
     font-size: 14px;
     font-weight: 500;
+    &--month{
+        // display: none;
+    }
     &__row{
         width: 100%;
         height: calc(100% );
@@ -223,6 +226,32 @@
         cursor: pointer;
         margin-bottom: 10px;
         @extend %btn-hover;
+    }
+    &--week{
+        display: flex;
+        .bg-calendar__row--week {
+            padding-right: 19px;
+        }
+    }
+    &__hours{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(24, 1fr);
+        overflow: scroll;
+    }
+    &__hour-column{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid $border-color;
+
+    }
+    &__hour-row{
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        height: 50px;
+        border-top: 1px solid $border-color;
     }
     &__event,
     &__task,
@@ -272,6 +301,7 @@
         padding: 10px;
         user-select: none;
         background: #ccc;
+        cursor: move;
     }
     &__content{
         margin-left: 10%;
@@ -298,6 +328,9 @@
         resize: none;
         outline: none;
         padding: 5px;
+        &:focus{
+            border: 1px solid $accent-color;
+        }
     }
     &__btns{
         display: flex;
@@ -442,7 +475,7 @@
         overflow: hidden;
         transition: all .3s;
         &--show{
-            width: 170px;
+            width: 250px;
             height: 190px;
             opacity: 1;
         }
